@@ -4,7 +4,7 @@
 
 #include "Parser/parser.h"
 
-void parser::loadFile(string &assembly_file){
+void parser::loadFile(string &assembly_file){ // creating an ifstream for the input file
     this->file = assembly_file;
     ifstream fileStream(assembly_file);
     if(!fileStream.is_open()) fileError = true;
@@ -15,7 +15,7 @@ parser::parser() {
 
 }
 
-bool parser::checkEmptyString(std::string &line) {
+bool parser::checkEmptyString(std::string &line) { // check if the input string is empty
 
     string temp;
     for(auto i: line){
@@ -25,7 +25,7 @@ bool parser::checkEmptyString(std::string &line) {
     return temp.empty();
 }
 
-string parser::removeSpaces(std::string &line) {
+string parser::removeSpaces(std::string &line) { // remove white spaces in the input string
     string spacesRemoved;
     for(auto i:line){
         if(i == ' ') continue;
@@ -35,7 +35,7 @@ string parser::removeSpaces(std::string &line) {
     return spacesRemoved;
 }
 
-string parser::removeComments(std::string &line) {
+string parser::removeComments(std::string &line) { // remove comments from the input string
     string commentsRemoved;
     for(auto i:line){
         if(i == '/') break;
@@ -45,7 +45,7 @@ string parser::removeComments(std::string &line) {
     return commentsRemoved;
 }
 
-string parser::integerToBinaryString(int n){
+string parser::integerToBinaryString(int n){ // converts an integer n to a 15-bit integer
     string bin = "000000000000000";
     for(int i=0;i<15;i++){
         if(n & (1 << i)){
@@ -63,7 +63,7 @@ vector<string> parser::parse() {
 
     ifstream fileStream(file);
     string line;
-    while(getline(fileStream, line)){
+    while(getline(fileStream, line)){ // reading line by line from the file
         if(line.empty() || line[0] == '\r') continue;
         line = removeSpaces(line);
         line = removeComments(line);
@@ -74,7 +74,7 @@ vector<string> parser::parse() {
     fileStream.close();
 
     vector<string> binCode;
-    symbol_table ST = *new symbol_table();
+    symbol_table ST = *new symbol_table(); // symbol table for keeping track of symbols
 
     int currentAvailableAddress = 16;
     int lineNumber = 0;
